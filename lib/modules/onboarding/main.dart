@@ -11,16 +11,36 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
       title: 'Flutter Demo',
       theme: ThemeData(
-        // This is the theme of your application.
-        //
-        // Try running your application with "flutter run". You'll see the
-        // application has a blue toolbar. Then, without quitting the app, try
-        // changing the primarySwatch below to Colors.green and then invoke
-        // "hot reload" (press "r" in the console where you ran "flutter run",
-        // or simply save your changes to "hot reload" in a Flutter IDE).
-        // Notice that the counter didn't reset back to zero; the application
-        // is not restarted.
         primarySwatch: Colors.blue,
+        textTheme: TextTheme(
+          headline2: TextStyle(
+            fontSize: 40,
+            fontWeight: FontWeight.bold,
+            color: Colors.black
+          ),
+          headline5: TextStyle(
+            fontSize: 18,
+            fontWeight: FontWeight.bold,
+            color: Colors.black,
+          )
+        ),
+        inputDecorationTheme: InputDecorationTheme(
+            border: InputBorder.none,
+            focusedBorder: InputBorder.none,
+            enabledBorder: InputBorder.none,
+            errorBorder: InputBorder.none,
+            disabledBorder: InputBorder.none
+        ),
+        elevatedButtonTheme: ElevatedButtonThemeData(
+          style: ElevatedButton.styleFrom(
+              primary: Colors.lightBlue,
+              minimumSize: Size(double.infinity, 56),
+              textStyle: TextStyle(
+                fontWeight: FontWeight.bold,
+                fontSize: 16
+              )
+          ),
+        )
       ),
       home: MyHomePage(title: 'Flutter Demo Home Page'),
     );
@@ -46,18 +66,8 @@ class MyHomePage extends StatefulWidget {
 }
 
 class _MyHomePageState extends State<MyHomePage> {
-  int _counter = 0;
 
-  void _incrementCounter() {
-    setState(() {
-      // This call to setState tells the Flutter framework that something has
-      // changed in this State, which causes it to rerun the build method below
-      // so that the display can reflect the updated values. If we changed
-      // _counter without calling setState(), then the build method would not be
-      // called again, and so nothing would appear to happen.
-      _counter++;
-    });
-  }
+  final GlobalKey<FormState> _emailFormKey = GlobalKey<FormState>();
 
   @override
   Widget build(BuildContext context) {
@@ -73,10 +83,11 @@ class _MyHomePageState extends State<MyHomePage> {
         // the App.build method, and use it to set our appbar title.
         title: Text(widget.title),
       ),
-      body: Center(
-        // Center is a layout widget. It takes a single child and positions it
-        // in the middle of the parent.
+      body: Padding(
+        padding: EdgeInsets.all(20),
         child: Column(
+          mainAxisSize: MainAxisSize.max,
+          crossAxisAlignment: CrossAxisAlignment.start,
           // Column is also a layout widget. It takes a list of children and
           // arranges them vertically. By default, it sizes itself to fit its
           // children horizontally, and tries to be as tall as its parent.
@@ -91,23 +102,74 @@ class _MyHomePageState extends State<MyHomePage> {
           // center the children vertically; the main axis here is the vertical
           // axis because Columns are vertical (the cross axis would be
           // horizontal).
-          mainAxisAlignment: MainAxisAlignment.center,
           children: <Widget>[
-            Text(
-              'You have pushed the button this many times:',
+
+            RichText(
+              text: TextSpan(
+                text: 'Welcome to \nGIN ',
+                style: Theme.of(context).textTheme.headline2,
+                children: const <TextSpan> [
+                  TextSpan(
+                      text: 'Finans',
+                      style: TextStyle(
+                        inherit: true,
+                        color: Colors.blue
+                      )
+                  )
+                ]
+              )
             ),
             Text(
-              '$_counter',
-              style: Theme.of(context).textTheme.headline4,
+              'Welcome to The Bank of the Future.\nManage and track your accounts on the go.',
+              style: Theme.of(context).textTheme.headline5,
             ),
+            Form(
+              key: _emailFormKey,
+              child: Column(
+                children: [
+                  TextFormField(
+                      decoration: const InputDecoration(
+                        hintText: 'Email',
+                        prefixIcon: Icon(
+                          Icons.email_outlined,
+                          size: 24,
+                        ),
+                      ),
+                      validator: (String? value) {
+                        if (value == null || value.isEmpty) {
+                          return 'Email cannot be empty';
+                        } else if (!isValidEmail(value)) {
+                          return 'Email format is invalid';
+                        }
+                        return null;
+                      }
+                  )
+                ],
+              ),
+            ),
+            Expanded(
+                child: Align(
+                    alignment: Alignment.bottomCenter,
+                    child: ElevatedButton(
+                      onPressed: () {
+                        if (_emailFormKey.currentState!.validate()) {
+
+                        }
+                      },
+                      child: const Text("Next")
+                    )
+                )
+            )
           ],
         ),
       ),
-      floatingActionButton: FloatingActionButton(
-        onPressed: _incrementCounter,
-        tooltip: 'Increment',
-        child: Icon(Icons.add),
-      ), // This trailing comma makes auto-formatting nicer for build methods.
     );
+  }
+
+  bool isValidEmail(String email) {
+    if (RegExp(r"^[a-zA-Z0-9.a-zA-Z0-9.!#$%&'*+-/=?^_`{|}~]+@[a-zA-Z0-9]+\.[a-zA-Z]+").hasMatch(email)) {
+      return true;
+    }
+    return false;
   }
 }
