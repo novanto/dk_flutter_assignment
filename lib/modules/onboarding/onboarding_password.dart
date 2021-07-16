@@ -1,6 +1,9 @@
 import 'package:dk_flutter_assignment/modules/onboarding/onboarding_personal_information.dart';
 import 'package:flutter/material.dart';
 
+import 'components/onboarding_hint.dart';
+import 'components/password_requirement.dart';
+
 class OnboardingPassword extends StatefulWidget {
   @override
   _OnboardingPasswordPageState createState() => _OnboardingPasswordPageState();
@@ -8,12 +11,12 @@ class OnboardingPassword extends StatefulWidget {
 
 class _OnboardingPasswordPageState extends State<OnboardingPassword> {
 
-  final GlobalKey<FormState> _passwordFormKey = GlobalKey<FormState>();
+  final _passwordFormKey = GlobalKey<FormState>();
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Colors.lightBlue,
+      backgroundColor: Color(0xFF4E80E8),
       appBar: AppBar(
         title: Text("Create Account"),
         elevation: 0,
@@ -24,85 +27,66 @@ class _OnboardingPasswordPageState extends State<OnboardingPassword> {
           mainAxisSize: MainAxisSize.max,
           crossAxisAlignment: CrossAxisAlignment.start,
           children: <Widget>[
-            Text(
-              'Create Password',
-              style: Theme.of(context).textTheme.headline6,
+            OnboardingHint(
+                key: Key('onboardingPasswordHint'),
+                title: 'Create Password',
+                subtitle: 'Password will be used to login to account'
             ),
-            Text(
-              'Password will be used to login to account',
-              style: Theme.of(context).textTheme.subtitle1,
-            ),
-            Form(
-              key: _passwordFormKey,
-              child: Column(
-                children: [
-                  TextFormField(
-                      style: TextStyle(
-                          color: Colors.black45,
-                          backgroundColor: Colors.white
-                      ),
-                      decoration: const InputDecoration(
-                        hintText: 'Create Password',
-                        contentPadding: EdgeInsets.all(12),
-                        suffixIcon: Icon(
-                          Icons.visibility_outlined,
-                          color: Colors.lightBlue,
-                          size: 24,
+            IntrinsicWidth(
+              child: Form(
+                  key: _passwordFormKey,
+                  child: Container(
+                      color: Colors.white,
+                      child: TextFormField(
+                          style: TextStyle(
+                          color: Colors.black87,
                         ),
-                      ),
-                      validator: (String? value) {
-                        return isValidPassword(value);
-                      }
+                        decoration: const InputDecoration(
+                          hintText: 'Create Password',
+                          contentPadding: EdgeInsets.all(12),
+                          suffixIcon: Icon(
+                            Icons.visibility_outlined,
+                            color: Color(0xFF4E80E8),
+                            size: 24,
+                          ),
+                        ),
+                        validator: (String? value) {
+                          return isValidPassword(value);
+                        }
+                      )
                   )
-                ],
-              ),
+              )
             ),
-            RichText(
-                text: TextSpan(
-                  text: 'Complexity'
-                )
+            Container(
+              child: RichText(
+                  text: TextSpan(
+                      text: 'Complexity: '
+                  )
+              )
             ),
             Row(
               mainAxisSize: MainAxisSize.max,
               children: [
-                Column(
-                  mainAxisSize: MainAxisSize.max,
-                  children: [
-                    Text('a', style: TextStyle(
-                        fontSize: 20
-                    )),
-                    Text('Lowercase')
-                  ],
+                PasswordRequirement(
+                  key: Key('lowercaseRequirement'),
+                  title: 'a',
+                  subtitle: 'Lowercase'
                 ),
-                Column(
-                  mainAxisSize: MainAxisSize.max,
-                  children: [
-                    Text('A', style: TextStyle(
-                        fontSize: 20
-                    )),
-                    Text('Uppercase')
-                  ],
+                PasswordRequirement(
+                    key: Key('uppercaseRequirement'),
+                    title: 'A',
+                    subtitle: 'Uppercase'
                 ),
-                Column(
-                  mainAxisSize: MainAxisSize.max,
-                  children: [
-                    Text('123', style: TextStyle(
-                        fontSize: 20
-                    )),
-                    Text('Number')
-                  ],
+                PasswordRequirement(
+                    key: Key('numberRequirement'),
+                    title: '123',
+                    subtitle: 'Number'
                 ),
-                Column(
-                  mainAxisSize: MainAxisSize.max,
-                  children: [
-                    Text(
-                        '9+', style: TextStyle(
-                        fontSize: 20
-                      ),
-                    ),
-                    Text('Characters')
-                  ],
-                )
+                PasswordRequirement(
+                    key: Key('mincharRequirement'),
+                    title: '9+',
+                    subtitle: 'Characters'
+                ),
               ],
             ),
             Expanded(

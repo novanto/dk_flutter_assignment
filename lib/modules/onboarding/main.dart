@@ -12,7 +12,7 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
       title: 'Flutter Demo',
       theme: ThemeData(
-        primarySwatch: Colors.blue,
+        primaryColor: const Color(0xFF4E80E8),
         textTheme: TextTheme(
           headline2: TextStyle(
             fontSize: 40,
@@ -26,7 +26,7 @@ class MyApp extends StatelessWidget {
           ),
           headline6: TextStyle(
             color: Colors.white,
-            fontWeight: FontWeight.bold,
+            fontWeight: FontWeight.w500,
             fontSize: 18
           ),
           subtitle1: TextStyle(
@@ -43,7 +43,7 @@ class MyApp extends StatelessWidget {
         ),
         elevatedButtonTheme: ElevatedButtonThemeData(
           style: ElevatedButton.styleFrom(
-              primary: Colors.lightBlue,
+              primary: Color(0xFF739FE8),
               minimumSize: Size(double.infinity, 56),
               textStyle: TextStyle(
                 fontWeight: FontWeight.bold,
@@ -88,11 +88,6 @@ class _MyHomePageState extends State<MyHomePage> {
     // fast, so that you can just rebuild anything that needs updating rather
     // than having to individually change instances of widgets.
     return Scaffold(
-      appBar: AppBar(
-        // Here we take the value from the MyHomePage object that was created by
-        // the App.build method, and use it to set our appbar title.
-        title: Text(widget.title),
-      ),
       body: Padding(
         padding: EdgeInsets.all(20),
         child: Column(
@@ -139,7 +134,7 @@ class _MyHomePageState extends State<MyHomePage> {
                 children: [
                   TextFormField(
                       style: TextStyle(
-                          color: Colors.black45,
+                          color: Colors.black87,
                           backgroundColor: Colors.white
                       ),
                       decoration: const InputDecoration(
