@@ -1,3 +1,4 @@
+import 'package:dk_flutter_assignment/modules/onboarding/onboarding_password.dart';
 import 'package:flutter/material.dart';
 
 void main() {
@@ -22,6 +23,15 @@ class MyApp extends StatelessWidget {
             fontSize: 18,
             fontWeight: FontWeight.bold,
             color: Colors.black,
+          ),
+          headline6: TextStyle(
+            color: Colors.white,
+            fontWeight: FontWeight.bold,
+            fontSize: 18
+          ),
+          subtitle1: TextStyle(
+            fontWeight: FontWeight.normal,
+            color: Colors.white
           )
         ),
         inputDecorationTheme: InputDecorationTheme(
@@ -128,11 +138,17 @@ class _MyHomePageState extends State<MyHomePage> {
               child: Column(
                 children: [
                   TextFormField(
+                      style: TextStyle(
+                          color: Colors.black45,
+                          backgroundColor: Colors.white
+                      ),
                       decoration: const InputDecoration(
                         hintText: 'Email',
+                        fillColor: Colors.black26,
                         prefixIcon: Icon(
                           Icons.email_outlined,
                           size: 24,
+                          color: Colors.black26
                         ),
                       ),
                       validator: (String? value) {
@@ -153,7 +169,9 @@ class _MyHomePageState extends State<MyHomePage> {
                     child: ElevatedButton(
                       onPressed: () {
                         if (_emailFormKey.currentState!.validate()) {
-
+                          Navigator.push(context, MaterialPageRoute(builder: (context) {
+                            return OnboardingPassword();
+                          }));
                         }
                       },
                       child: const Text("Next")
