@@ -10,9 +10,11 @@ class OnboardingSchedule extends StatefulWidget {
   _OnboardingSchedulePageState createState() => _OnboardingSchedulePageState();
 }
 
-class _OnboardingSchedulePageState extends State<OnboardingSchedule> with TickerProviderStateMixin {
+class _OnboardingSchedulePageState extends State<OnboardingSchedule> with SingleTickerProviderStateMixin {
 
-  late AnimationController animationController;
+  late final AnimationController animationController;
+
+  late final Animation<double> _animation;
 
   String _dateText = '- Choose Date -';
 
@@ -22,20 +24,21 @@ class _OnboardingSchedulePageState extends State<OnboardingSchedule> with Ticker
 
   TimeOfDay selectedTime = TimeOfDay(hour: 00, minute: 00);
 
+  bool isDateSelected = false;
+
+  bool isTimeSelected = false;
+
   @override
   void initState() {
     animationController = new AnimationController(
       vsync: this,
-      duration: new Duration(milliseconds: 5000),
+      duration: new Duration(milliseconds: 1000),
+    )..repeat();
+
+    _animation = CurvedAnimation(
+      parent: animationController,
+      curve: Curves.fastOutSlowIn,
     );
-    animationController.forward();
-    animationController.addListener(() {
-      setState(() {
-        // if (animationController.status == AnimationStatus.completed) {
-        //   animationController.repeat();
-        // }
-      });
-    });
 
     super.initState();
   }
@@ -52,6 +55,7 @@ class _OnboardingSchedulePageState extends State<OnboardingSchedule> with Ticker
     if (picked != null)
       setState(() {
         selectedDate = picked;
+        this.isDateSelected = true;
         _dateText = formatDate(selectedDate, [DD,', ',dd,' ',M,' ',yyyy]);
       });
   }
@@ -65,6 +69,7 @@ class _OnboardingSchedulePageState extends State<OnboardingSchedule> with Ticker
     if (picked != null)
       setState(() {
         selectedTime = picked;
+        this.isTimeSelected = true;
         _timeText = formatDate(DateTime(
             selectedDate.year,
             selectedDate.month,
@@ -88,38 +93,36 @@ class _OnboardingSchedulePageState extends State<OnboardingSchedule> with Ticker
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                Stack(
-                  children: [
-                    AnimatedBuilder(
-                        animation: animationController,
-                        child: Container(
-                            width: 40,
-                            height: 40,
-                            decoration: BoxDecoration(
-                              shape: BoxShape.circle,
-                              color: Colors.white24,
-                            )
-                        ),
-                        builder: (BuildContext context, Widget? _widget) {
-                          return new Transform.scale(
-                            scale: 1.5,
-                            child: _widget,
-                          );
-                        }
-                    ),
-                    Container(
-                        width: 40,
-                        height: 40,
-                        decoration: BoxDecoration(
-                          shape: BoxShape.circle,
-                          color: Colors.white,
-                        ),
-                        child: Icon(
-                          Icons.event,
-                          color: Color(0xFF4E80E8),
-                        )
-                    )
-                  ],
+                Container(
+                  margin: EdgeInsets.only(top: 20, bottom: 36),
+                  child: Stack(
+                    alignment: Alignment.center,
+                    children: [
+                      ScaleTransition(
+                          scale: _animation,
+                          child: Container(
+                              width: 60,
+                              height: 60,
+                              decoration: BoxDecoration(
+                                shape: BoxShape.circle,
+                                color: Colors.white24,
+                              )
+                          )
+                      ),
+                      Container(
+                          width: 40,
+                          height: 40,
+                          decoration: BoxDecoration(
+                            shape: BoxShape.circle,
+                            color: Colors.white,
+                          ),
+                          child: Icon(
+                            Icons.event,
+                            color: Color(0xFF4E80E8),
+                          )
+                      )
+                    ],
+                  )
                 ),
                 OnboardingHint(
                   key: Key('onboardingScheduleHint'),
@@ -149,9 +152,15 @@ class _OnboardingSchedulePageState extends State<OnboardingSchedule> with Ticker
                     key: Key('onboardingPasswordButton'),
                     text: 'Next',
                     onPressedListener: () {
-                      Navigator.push(context, MaterialPageRoute(builder: (context) {
-                        return OnboardingSuccess();
-                      }));
+                      if (this.isDateSelected && this.isTimeSelected) {
+                        Navigator.push(context, MaterialPageRoute(builder: (context) {
+                          return OnboardingSuccess();
+                        }));
+                      } else {
+                        ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+                            content: Text('You must choose the date and time first')
+                        ));
+                      }
                     }
                 )
               ],
