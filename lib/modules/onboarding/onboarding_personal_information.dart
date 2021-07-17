@@ -1,3 +1,4 @@
+import 'package:dk_flutter_assignment/modules/onboarding/components/gin_dropdown.dart';
 import 'package:dk_flutter_assignment/modules/onboarding/components/onboarding_button.dart';
 import 'package:dk_flutter_assignment/modules/onboarding/components/onboarding_hint.dart';
 import 'package:dk_flutter_assignment/modules/onboarding/onboarding_schedule.dart';
@@ -9,6 +10,32 @@ class OnboardingPersonalInfo extends StatefulWidget {
 }
 
 class _OnboardingPersonalInfoPageState extends State<OnboardingPersonalInfo> {
+
+  final String defaultOption = '- Choose Option -';
+
+  List<String> _activationItems =  [
+    '- Choose Option -',
+    'Investment',
+    'Asset Diversification',
+    'Others'
+  ];
+
+  List<String> _incomeItems = [
+    '- Choose Option -',
+    '< IDR 5.000.000',
+    'IDR 5.000.000 - IDR 10.000.000',
+    'IDR 10.000.000 - IDR 20.000.000',
+    '> IDR 20.000.000'
+  ];
+
+  List<String> _expenseItems = [
+    '- Choose Option -',
+    '< IDR 5.000.000',
+    'IDR 5.000.000 - IDR 10.000.000',
+    'IDR 10.000.000 - IDR 20.000.000',
+    '> IDR 20.000.000'
+  ];
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -27,8 +54,20 @@ class _OnboardingPersonalInfoPageState extends State<OnboardingPersonalInfo> {
                   title: 'Personal Information',
                   subtitle: 'Please fill in the information below and your goal for digital saving.'
               ),
-              Container(
-
+              GinDropdown(
+                  key: Key('goalDropdown'),
+                  defaultOption: defaultOption,
+                  itemList: _activationItems
+              ),
+              GinDropdown(
+                  key: Key('incomeDropdown'),
+                  defaultOption: defaultOption,
+                  itemList: _incomeItems
+              ),
+              GinDropdown(
+                  key: Key('expenseDropdown'),
+                  defaultOption: defaultOption,
+                  itemList: _expenseItems
               ),
               OnboardingButton(
                   key: Key('onboardingPasswordButton'),
@@ -44,4 +83,5 @@ class _OnboardingPersonalInfoPageState extends State<OnboardingPersonalInfo> {
         )
     );
   }
+
 }
