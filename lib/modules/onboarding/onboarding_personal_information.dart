@@ -1,3 +1,5 @@
+import 'package:dk_flutter_assignment/modules/onboarding/components/onboarding_button.dart';
+import 'package:dk_flutter_assignment/modules/onboarding/components/onboarding_hint.dart';
 import 'package:dk_flutter_assignment/modules/onboarding/onboarding_schedule.dart';
 import 'package:flutter/material.dart';
 
@@ -18,19 +20,24 @@ class _OnboardingPersonalInfoPageState extends State<OnboardingPersonalInfo> {
         body: Padding(
           padding: EdgeInsets.all(20),
           child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              Expanded(
-                  child: Align(
-                      alignment: Alignment.bottomCenter,
-                      child: ElevatedButton(
-                          onPressed: () {
-                            Navigator.push(context, MaterialPageRoute(builder: (context) {
-                              return OnboardingSchedule();
-                            }));
-                          },
-                          child: const Text("Next")
-                      )
-                  )
+              OnboardingHint(
+                  key: Key('onboardingPersonalInfoHint'),
+                  title: 'Personal Information',
+                  subtitle: 'Please fill in the information below and your goal for digital saving.'
+              ),
+              Container(
+
+              ),
+              OnboardingButton(
+                  key: Key('onboardingPasswordButton'),
+                  text: 'Next',
+                  onPressedListener: () {
+                    Navigator.push(context, MaterialPageRoute(builder: (context) {
+                      return OnboardingSchedule();
+                    }));
+                  }
               )
             ],
           )

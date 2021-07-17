@@ -1,3 +1,4 @@
+import 'package:dk_flutter_assignment/modules/onboarding/components/onboarding_button.dart';
 import 'package:dk_flutter_assignment/modules/onboarding/onboarding_password.dart';
 import 'package:flutter/material.dart';
 
@@ -13,6 +14,7 @@ class MyApp extends StatelessWidget {
       title: 'Flutter Demo',
       theme: ThemeData(
         primaryColor: const Color(0xFF4E80E8),
+        fontFamily: 'Montserrat',
         textTheme: TextTheme(
           headline2: TextStyle(
             fontSize: 40,
@@ -21,12 +23,13 @@ class MyApp extends StatelessWidget {
           ),
           headline5: TextStyle(
             fontSize: 18,
-            fontWeight: FontWeight.bold,
+            fontWeight: FontWeight.w600,
+            height: 1.5,
             color: Colors.black,
           ),
           headline6: TextStyle(
             color: Colors.white,
-            fontWeight: FontWeight.w500,
+            fontWeight: FontWeight.w600,
             fontSize: 18
           ),
           subtitle1: TextStyle(
@@ -46,6 +49,7 @@ class MyApp extends StatelessWidget {
               primary: Color(0xFF739FE8),
               minimumSize: Size(double.infinity, 56),
               textStyle: TextStyle(
+                fontFamily: 'Montserrat',
                 fontWeight: FontWeight.bold,
                 fontSize: 16
               )
@@ -88,27 +92,13 @@ class _MyHomePageState extends State<MyHomePage> {
     // fast, so that you can just rebuild anything that needs updating rather
     // than having to individually change instances of widgets.
     return Scaffold(
+      backgroundColor: Color(0xFFF9F9F9),
       body: Padding(
         padding: EdgeInsets.all(20),
         child: Column(
           mainAxisSize: MainAxisSize.max,
           crossAxisAlignment: CrossAxisAlignment.start,
-          // Column is also a layout widget. It takes a list of children and
-          // arranges them vertically. By default, it sizes itself to fit its
-          // children horizontally, and tries to be as tall as its parent.
-          //
-          // Invoke "debug painting" (press "p" in the console, choose the
-          // "Toggle Debug Paint" action from the Flutter Inspector in Android
-          // Studio, or the "Toggle Debug Paint" command in Visual Studio Code)
-          // to see the wireframe for each widget.
-          //
-          // Column has various properties to control how it sizes itself and
-          // how it positions its children. Here we use mainAxisAlignment to
-          // center the children vertically; the main axis here is the vertical
-          // axis because Columns are vertical (the cross axis would be
-          // horizontal).
           children: <Widget>[
-
             RichText(
               text: TextSpan(
                 text: 'Welcome to \nGIN ',
@@ -124,54 +114,69 @@ class _MyHomePageState extends State<MyHomePage> {
                 ]
               )
             ),
-            Text(
-              'Welcome to The Bank of the Future.\nManage and track your accounts on the go.',
-              style: Theme.of(context).textTheme.headline5,
+            Container(
+              margin: EdgeInsets.only(top: 20.0, bottom: 20.0),
+              child: Text(
+                'Welcome to The Bank of the Future.\nManage and track your accounts on the go.',
+                style: Theme.of(context).textTheme.headline5,
+              )
             ),
-            Form(
-              key: _emailFormKey,
-              child: Column(
-                children: [
-                  TextFormField(
-                      style: TextStyle(
-                          color: Colors.black87,
-                          backgroundColor: Colors.white
-                      ),
-                      decoration: const InputDecoration(
-                        hintText: 'Email',
-                        fillColor: Colors.black26,
-                        prefixIcon: Icon(
-                          Icons.email_outlined,
-                          size: 24,
-                          color: Colors.black26
-                        ),
-                      ),
-                      validator: (String? value) {
-                        if (value == null || value.isEmpty) {
-                          return 'Email cannot be empty';
-                        } else if (!isValidEmail(value)) {
-                          return 'Email format is invalid';
-                        }
-                        return null;
-                      }
-                  )
-                ],
+            Container(
+              decoration: BoxDecoration(
+                  color: Colors.white,
+                  borderRadius: BorderRadius.circular(12.0)
               ),
-            ),
-            Expanded(
-                child: Align(
-                    alignment: Alignment.bottomCenter,
-                    child: ElevatedButton(
-                      onPressed: () {
-                        if (_emailFormKey.currentState!.validate()) {
-                          Navigator.push(context, MaterialPageRoute(builder: (context) {
-                            return OnboardingPassword();
-                          }));
-                        }
-                      },
-                      child: const Text("Next")
-                    )
+              child: Container(
+                decoration: BoxDecoration(
+                    color: Color(0xFFF9F9F9),
+                    borderRadius: BorderRadius.circular(12.0)
+                ),
+                margin: EdgeInsets.all(12),
+                child: Form(
+                  key: _emailFormKey,
+                  child: Column(
+                    children: [
+                      TextFormField(
+                          style: TextStyle(
+                              color: Colors.black87,
+                              backgroundColor: Colors.white
+                          ),
+                          decoration: const InputDecoration(
+                            hintText: 'Email',
+                            fillColor: Colors.black26,
+                            prefixIcon: Padding(
+                                padding: EdgeInsets.only(bottom:6),
+                                child: Icon(
+                                    Icons.email_outlined,
+                                    size: 24,
+                                    color: Colors.black26
+                                )
+                            ),
+                          ),
+                          validator: (String? value) {
+                            if (value == null || value.isEmpty) {
+                              return 'Email cannot be empty';
+                            } else if (!isValidEmail(value)) {
+                              return 'Email format is invalid';
+                            }
+                            return null;
+                          }
+                      )
+                    ],
+                  ),
                 )
+              )
+            ),
+            OnboardingButton(
+                key: Key('onboardingPasswordButton'),
+                text: 'Next',
+                onPressedListener: () {
+                  if (_emailFormKey.currentState!.validate()) {
+                    Navigator.push(context, MaterialPageRoute(builder: (context) {
+                      return OnboardingPassword();
+                    }));
+                  }
+                }
             )
           ],
         ),
@@ -184,5 +189,31 @@ class _MyHomePageState extends State<MyHomePage> {
       return true;
     }
     return false;
+  }
+}
+
+class CurvedPainter extends CustomPainter {
+  @override
+  void paint(Canvas canvas, Size size) {
+    var paint = Paint()
+      ..color = Colors.blueAccent
+      ..strokeWidth = 1;
+
+    var path = Path();
+
+    path.moveTo(0, size.height * 0.7);
+    path.quadraticBezierTo(size.width * 0.25, size.height * 0.7,
+        size.width * 0.5, size.height * 0.8);
+    path.quadraticBezierTo(size.width * 0.75, size.height * 0.9,
+        size.width * 1.0, size.height * 0.8);
+    path.lineTo(size.width, size.height);
+    path.lineTo(0, size.height);
+
+    canvas.drawPath(path, paint);
+  }
+
+  @override
+  bool shouldRepaint(CustomPainter oldDelegate) {
+    return true;
   }
 }
