@@ -50,33 +50,39 @@ class _OnboardingPersonalInfoPageState extends State<OnboardingPersonalInfo> {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               OnboardingHint(
-                  key: Key('onboardingPersonalInfoHint'),
-                  title: 'Personal Information',
-                  subtitle: 'Please fill in the information below and your goal for digital saving.'
+                key: Key('onboardingPersonalInfoHint'),
+                title: 'Personal Information',
+                subtitle: 'Please fill in the information below and your goal for digital saving.'
+              ),
+              Container(
+                margin: EdgeInsets.only(top:20, bottom: 20)
               ),
               GinDropdown(
-                  key: Key('goalDropdown'),
-                  defaultOption: defaultOption,
-                  itemList: _activationItems
+                key: Key('goalDropdown'),
+                defaultOption: defaultOption,
+                itemList: _activationItems,
+                formLabel: 'Goal for Activation'
               ),
               GinDropdown(
-                  key: Key('incomeDropdown'),
-                  defaultOption: defaultOption,
-                  itemList: _incomeItems
+                key: Key('incomeDropdown'),
+                defaultOption: defaultOption,
+                itemList: _incomeItems,
+                formLabel: 'Monthly Income'
               ),
               GinDropdown(
-                  key: Key('expenseDropdown'),
-                  defaultOption: defaultOption,
-                  itemList: _expenseItems
+                key: Key('expenseDropdown'),
+                defaultOption: defaultOption,
+                itemList: _expenseItems,
+                formLabel: 'Monthly Expense'
               ),
               OnboardingButton(
-                  key: Key('onboardingPasswordButton'),
-                  text: 'Next',
-                  onPressedListener: () {
-                    Navigator.push(context, MaterialPageRoute(builder: (context) {
-                      return OnboardingSchedule();
-                    }));
-                  }
+                key: Key('onboardingPasswordButton'),
+                text: 'Next',
+                onPressedListener: () {
+                  Navigator.push(context, MaterialPageRoute(builder: (context) {
+                    return OnboardingSchedule();
+                  }));
+                }
               )
             ],
           )

@@ -1,3 +1,5 @@
+import 'package:date_format/date_format.dart';
+import 'package:dk_flutter_assignment/modules/onboarding/components/fake_dropdown.dart';
 import 'package:dk_flutter_assignment/modules/onboarding/components/onboarding_button.dart';
 import 'package:dk_flutter_assignment/modules/onboarding/components/onboarding_hint.dart';
 import 'package:dk_flutter_assignment/modules/onboarding/onboarding_success.dart';
@@ -12,6 +14,14 @@ class _OnboardingSchedulePageState extends State<OnboardingSchedule> with Ticker
 
   late AnimationController animationController;
 
+  String _dateText = '- Choose Date -';
+
+  String _timeText = '- Choose Time -';
+
+  DateTime selectedDate = new DateTime.now();
+
+  TimeOfDay selectedTime = TimeOfDay(hour: 00, minute: 00);
+
   @override
   void initState() {
     animationController = new AnimationController(
@@ -21,13 +31,48 @@ class _OnboardingSchedulePageState extends State<OnboardingSchedule> with Ticker
     animationController.forward();
     animationController.addListener(() {
       setState(() {
-        if (animationController.status == AnimationStatus.completed) {
-          animationController.repeat();
-        }
+        // if (animationController.status == AnimationStatus.completed) {
+        //   animationController.repeat();
+        // }
       });
     });
 
     super.initState();
+  }
+
+  Future<Null> _selectDate(BuildContext context) async {
+    DateTime currentDate = new DateTime.now();
+
+    final DateTime? picked = await showDatePicker(
+        context: context,
+        initialDate: selectedDate,
+        initialDatePickerMode: DatePickerMode.day,
+        firstDate: DateTime(currentDate.year),
+        lastDate: DateTime(currentDate.year+10));
+    if (picked != null)
+      setState(() {
+        selectedDate = picked;
+        _dateText = formatDate(selectedDate, [DD,', ',dd,' ',M,' ',yyyy]);
+      });
+  }
+
+
+  Future<Null> _selectTime(BuildContext context) async {
+    final TimeOfDay? picked = await showTimePicker(
+      context: context,
+      initialTime: selectedTime,
+    );
+    if (picked != null)
+      setState(() {
+        selectedTime = picked;
+        _timeText = formatDate(DateTime(
+            selectedDate.year,
+            selectedDate.month,
+            selectedDate.day,
+            selectedTime.hour,
+            selectedTime.minute
+        ), [hh, ':', nn, " ", am]).toString();
+      });
   }
 
   @override
@@ -77,9 +122,28 @@ class _OnboardingSchedulePageState extends State<OnboardingSchedule> with Ticker
                   ],
                 ),
                 OnboardingHint(
-                    key: Key('onboardingScheduleHint'),
-                    title: 'Schedule Video Call',
-                    subtitle: 'Choose the date and time that you prefer, we will send a link via email to make a video call on the scheduled date and time.'
+                  key: Key('onboardingScheduleHint'),
+                  title: 'Schedule Video Call',
+                  subtitle: 'Choose the date and time that you prefer, we will send a link via email to make a video call on the scheduled date and time.'
+                ),
+                Container(
+                  margin: EdgeInsets.only(top:20, bottom: 20)
+                ),
+                FakeDropdown(
+                  key: Key('dateDropdown'),
+                  formHint: _dateText,
+                  formLabel: 'Date',
+                  onPressedListener: () {
+                    _selectDate(context);
+                  },
+                ),
+                FakeDropdown(
+                  key: Key('timeDropdown'),
+                  formLabel: 'Time',
+                  formHint: _timeText,
+                  onPressedListener: () {
+                    _selectTime(context);
+                  },
                 ),
                 OnboardingButton(
                     key: Key('onboardingPasswordButton'),
