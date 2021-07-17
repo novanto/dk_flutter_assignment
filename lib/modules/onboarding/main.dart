@@ -86,104 +86,114 @@ class _MyHomePageState extends State<MyHomePage> {
 
   @override
   Widget build(BuildContext context) {
-    // This method is rerun every time setState is called, for instance as done
-    // by the _incrementCounter method above.
-    //
-    // The Flutter framework has been optimized to make rerunning build methods
-    // fast, so that you can just rebuild anything that needs updating rather
-    // than having to individually change instances of widgets.
     return Scaffold(
-      backgroundColor: Color(0xFFF9F9F9),
-      body: Padding(
-        padding: EdgeInsets.all(20),
-        child: Column(
-          mainAxisSize: MainAxisSize.max,
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: <Widget>[
-            Container(margin: EdgeInsets.only(top:40)),
-            OnboardingStep(key: Key("mainStep"), currentStep: 0),
-            RichText(
-              text: TextSpan(
-                text: 'Welcome to \nGIN ',
-                style: Theme.of(context).textTheme.headline2,
-                children: const <TextSpan> [
-                  TextSpan(
-                      text: 'Finans',
-                      style: TextStyle(
-                        inherit: true,
-                        color: Colors.blue
-                      )
-                  )
-                ]
-              )
+      body: Column(
+        mainAxisSize: MainAxisSize.max,
+        children: [
+          Container(
+            color: Color(0xFF4E80E8),
+            child: Column(
+              children: [
+                Container(margin: EdgeInsets.only(top:40)),
+                OnboardingStep(key: Key("mainStep"), currentStep: 0),
+                CustomPaint(size: Size(double.maxFinite, 60), painter: CurvedPainter())
+              ],
             ),
-            Container(
-              margin: EdgeInsets.only(top: 20.0, bottom: 20.0),
-              child: Text(
-                'Welcome to The Bank of the Future.\nManage and track your accounts on the go.',
-                style: Theme.of(context).textTheme.headline5,
-              )
-            ),
-            Container(
-              decoration: BoxDecoration(
-                  color: Colors.white,
-                  borderRadius: BorderRadius.circular(12.0)
-              ),
-              child: Container(
-                decoration: BoxDecoration(
-                    color: Color(0xFFF9F9F9),
-                    borderRadius: BorderRadius.circular(12.0)
+          ),
+          Container(
+            margin: EdgeInsets.only(left: 20, right: 20),
+            color: Color(0xFFF4F4F4),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                RichText(
+                    text: TextSpan(
+                        text: 'Welcome to \nGIN ',
+                        style: Theme.of(context).textTheme.headline2,
+                        children: const <TextSpan> [
+                          TextSpan(
+                              text: 'Finans',
+                              style: TextStyle(
+                                  inherit: true,
+                                  color: Colors.blue
+                              )
+                          )
+                        ]
+                    )
                 ),
-                margin: EdgeInsets.all(12),
-                child: Form(
-                  key: _emailFormKey,
-                  child: Column(
-                    children: [
-                      TextFormField(
-                          style: TextStyle(
-                              color: Colors.black87,
-                              backgroundColor: Colors.white
+                Container(
+                    margin: EdgeInsets.only(top: 20.0, bottom: 20.0),
+                    child: Text(
+                      'Welcome to The Bank of the Future.\nManage and track your accounts on the go.',
+                      style: Theme.of(context).textTheme.headline5,
+                    )
+                ),
+                Container(
+                    decoration: BoxDecoration(
+                        color: Colors.white,
+                        borderRadius: BorderRadius.circular(12.0)
+                    ),
+                    child: Container(
+                        decoration: BoxDecoration(
+                            color: Color(0xFFF9F9F9),
+                            borderRadius: BorderRadius.circular(12.0)
+                        ),
+                        margin: EdgeInsets.all(12),
+                        child: Form(
+                          key: _emailFormKey,
+                          child: Column(
+                            children: [
+                              TextFormField(
+                                  style: TextStyle(
+                                      color: Colors.black87,
+                                      backgroundColor: Colors.white
+                                  ),
+                                  decoration: const InputDecoration(
+                                    hintText: 'Email',
+                                    fillColor: Colors.black26,
+                                    prefixIcon: Padding(
+                                        padding: EdgeInsets.only(bottom:6),
+                                        child: Icon(
+                                            Icons.email_outlined,
+                                            size: 24,
+                                            color: Colors.black26
+                                        )
+                                    ),
+                                  ),
+                                  validator: (String? value) {
+                                    if (value == null || value.isEmpty) {
+                                      return 'Email cannot be empty';
+                                    } else if (!isValidEmail(value)) {
+                                      return 'Email format is invalid';
+                                    }
+                                    return null;
+                                  }
+                              )
+                            ],
                           ),
-                          decoration: const InputDecoration(
-                            hintText: 'Email',
-                            fillColor: Colors.black26,
-                            prefixIcon: Padding(
-                                padding: EdgeInsets.only(bottom:6),
-                                child: Icon(
-                                    Icons.email_outlined,
-                                    size: 24,
-                                    color: Colors.black26
-                                )
-                            ),
-                          ),
-                          validator: (String? value) {
-                            if (value == null || value.isEmpty) {
-                              return 'Email cannot be empty';
-                            } else if (!isValidEmail(value)) {
-                              return 'Email format is invalid';
-                            }
-                            return null;
-                          }
-                      )
-                    ],
-                  ),
-                )
-              )
+                        )
+                    )
+                ),
+              ],
             ),
-            OnboardingButton(
-                key: Key('onboardingPasswordButton'),
-                text: 'Next',
-                onPressedListener: () {
-                  if (_emailFormKey.currentState!.validate()) {
-                    Navigator.push(context, MaterialPageRoute(builder: (context) {
-                      return OnboardingPassword();
-                    }));
+          ),
+          Spacer(),
+          Container(
+              margin: EdgeInsets.only(left: 20, right: 20, bottom: 20),
+              child: OnboardingButton(
+                  key: Key('onboardingPasswordButton'),
+                  text: 'Next',
+                  onPressedListener: () {
+                    if (_emailFormKey.currentState!.validate()) {
+                      Navigator.push(context, MaterialPageRoute(builder: (context) {
+                        return OnboardingPassword();
+                      }));
+                    }
                   }
-                }
-            )
-          ],
-        ),
-      ),
+              )
+          )
+        ],
+      )
     );
   }
 
@@ -198,21 +208,22 @@ class _MyHomePageState extends State<MyHomePage> {
 class CurvedPainter extends CustomPainter {
   @override
   void paint(Canvas canvas, Size size) {
-    var paint = Paint()
-      ..color = Colors.blueAccent
+    Paint paint_0 = new Paint()
+      ..color = Color.fromARGB(255, 244, 244, 244)
+      ..style = PaintingStyle.fill
       ..strokeWidth = 1;
 
-    var path = Path();
 
-    path.moveTo(0, size.height * 0.7);
-    path.quadraticBezierTo(size.width * 0.25, size.height * 0.7,
-        size.width * 0.5, size.height * 0.8);
-    path.quadraticBezierTo(size.width * 0.75, size.height * 0.9,
-        size.width * 1.0, size.height * 0.8);
-    path.lineTo(size.width, size.height);
-    path.lineTo(0, size.height);
+    Path path_0 = Path();
+    path_0.moveTo(0,size.height);
+    path_0.cubicTo(size.width*0.0006250,size.height*0.9185714,0,size.height*0.9257179,0,size.height*0.9009571);
+    path_0.quadraticBezierTo(size.width*-0.0207083,size.height*0.2014286,size.width*0.2177583,size.height*0.3171857);
+    path_0.quadraticBezierTo(size.width*0.7983979,size.height*0.6836179,size.width,size.height*0.8524286);
+    path_0.quadraticBezierTo(size.width,size.height*0.8893214,size.width,size.height);
+    path_0.quadraticBezierTo(size.width*0.7500000,size.height,0,size.height);
+    path_0.close();
 
-    canvas.drawPath(path, paint);
+    canvas.drawPath(path_0, paint_0);
   }
 
   @override

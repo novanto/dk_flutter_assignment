@@ -14,13 +14,23 @@ class OnboardingStep extends StatelessWidget {
   Widget build(BuildContext context) {
     return Container(
         margin: EdgeInsets.only(top: 4, bottom: 20),
-        child: Row(
-          mainAxisSize: MainAxisSize.max,
+        child: Stack(
+          alignment: Alignment.center,
           children: [
-            OnboardingStepItem(key: Key("step1"), currentStep: currentStep, stepNumber: 1),
-            OnboardingStepItem(key: Key("step2"), currentStep: currentStep, stepNumber: 2),
-            OnboardingStepItem(key: Key("step3"), currentStep: currentStep, stepNumber: 3),
-            OnboardingStepItem(key: Key("step4"), currentStep: currentStep, stepNumber: 4)
+            Container(
+              width: double.infinity,
+              height: 4,
+              color: Colors.black
+            ),
+            Row(
+              mainAxisSize: MainAxisSize.max,
+              children: [
+                OnboardingStepItem(key: Key("step1"), currentStep: currentStep, stepNumber: 1),
+                OnboardingStepItem(key: Key("step2"), currentStep: currentStep, stepNumber: 2),
+                OnboardingStepItem(key: Key("step3"), currentStep: currentStep, stepNumber: 3),
+                OnboardingStepItem(key: Key("step4"), currentStep: currentStep, stepNumber: 4)
+              ],
+            )
           ],
         )
     );
