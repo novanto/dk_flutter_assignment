@@ -1,3 +1,4 @@
+import 'package:dk_flutter_assignment/modules/onboarding/components/onboarding_step.dart';
 import 'package:flutter/material.dart';
 
 class OnboardingSuccess extends StatefulWidget {
@@ -33,6 +34,8 @@ class _OnboardingSuccessPageState extends State<OnboardingSuccess> with SingleTi
         body: Center(
           child: Column(
             children: [
+              Container(margin: EdgeInsets.only(top:40)),
+              OnboardingStep(key: Key("successStep"), currentStep: 4),
               Stack(
                 alignment: Alignment.center,
                 children: [

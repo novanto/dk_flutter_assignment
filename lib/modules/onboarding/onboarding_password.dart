@@ -1,4 +1,5 @@
 import 'package:dk_flutter_assignment/modules/onboarding/components/onboarding_button.dart';
+import 'package:dk_flutter_assignment/modules/onboarding/components/onboarding_step.dart';
 import 'package:dk_flutter_assignment/modules/onboarding/onboarding_personal_information.dart';
 import 'package:flutter/material.dart';
 
@@ -103,13 +104,14 @@ class _OnboardingPasswordPageState extends State<OnboardingPassword> {
           mainAxisSize: MainAxisSize.max,
           crossAxisAlignment: CrossAxisAlignment.start,
           children: <Widget>[
+            OnboardingStep(key: Key("passwordStep"), currentStep: 1),
             OnboardingHint(
                 key: Key('onboardingPasswordHint'),
                 title: 'Create Password',
                 subtitle: 'Password will be used to login to account'
             ),
             Container(
-              margin: EdgeInsets.only(top: 44),
+              margin: EdgeInsets.only(top: 40),
               decoration: BoxDecoration(
                   color: Colors.white,
                   borderRadius: BorderRadius.circular(12.0)
@@ -142,7 +144,7 @@ class _OnboardingPasswordPageState extends State<OnboardingPassword> {
               )
             ),
             Container(
-              margin: EdgeInsets.only(top: 32.0, bottom: 44.0),
+              margin: EdgeInsets.only(top: 32.0, bottom: 32.0),
               child: RichText(
                   text: TextSpan(
                       text: 'Complexity:  ',

@@ -1,6 +1,7 @@
 import 'package:dk_flutter_assignment/modules/onboarding/components/gin_dropdown.dart';
 import 'package:dk_flutter_assignment/modules/onboarding/components/onboarding_button.dart';
 import 'package:dk_flutter_assignment/modules/onboarding/components/onboarding_hint.dart';
+import 'package:dk_flutter_assignment/modules/onboarding/components/onboarding_step.dart';
 import 'package:dk_flutter_assignment/modules/onboarding/onboarding_schedule.dart';
 import 'package:flutter/material.dart';
 
@@ -49,6 +50,7 @@ class _OnboardingPersonalInfoPageState extends State<OnboardingPersonalInfo> {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
+              OnboardingStep(key: Key("personalInfoStep"), currentStep: 2),
               OnboardingHint(
                 key: Key('onboardingPersonalInfoHint'),
                 title: 'Personal Information',

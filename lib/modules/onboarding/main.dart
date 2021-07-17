@@ -1,4 +1,5 @@
 import 'package:dk_flutter_assignment/modules/onboarding/components/onboarding_button.dart';
+import 'package:dk_flutter_assignment/modules/onboarding/components/onboarding_step.dart';
 import 'package:dk_flutter_assignment/modules/onboarding/onboarding_password.dart';
 import 'package:flutter/material.dart';
 
@@ -99,6 +100,8 @@ class _MyHomePageState extends State<MyHomePage> {
           mainAxisSize: MainAxisSize.max,
           crossAxisAlignment: CrossAxisAlignment.start,
           children: <Widget>[
+            Container(margin: EdgeInsets.only(top:40)),
+            OnboardingStep(key: Key("mainStep"), currentStep: 0),
             RichText(
               text: TextSpan(
                 text: 'Welcome to \nGIN ',

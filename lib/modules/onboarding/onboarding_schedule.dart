@@ -2,6 +2,7 @@ import 'package:date_format/date_format.dart';
 import 'package:dk_flutter_assignment/modules/onboarding/components/fake_dropdown.dart';
 import 'package:dk_flutter_assignment/modules/onboarding/components/onboarding_button.dart';
 import 'package:dk_flutter_assignment/modules/onboarding/components/onboarding_hint.dart';
+import 'package:dk_flutter_assignment/modules/onboarding/components/onboarding_step.dart';
 import 'package:dk_flutter_assignment/modules/onboarding/onboarding_success.dart';
 import 'package:flutter/material.dart';
 
@@ -93,8 +94,9 @@ class _OnboardingSchedulePageState extends State<OnboardingSchedule> with Single
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
+                OnboardingStep(key: Key("scheduleStep"), currentStep: 3),
                 Container(
-                  margin: EdgeInsets.only(top: 20, bottom: 36),
+                  margin: EdgeInsets.only(top: 8, bottom: 36),
                   child: Stack(
                     alignment: Alignment.center,
                     children: [
