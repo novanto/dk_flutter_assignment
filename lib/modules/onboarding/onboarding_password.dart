@@ -16,10 +16,71 @@ class _OnboardingPasswordPageState extends State<OnboardingPassword> {
 
   bool _isPasswordHidden = true;
 
+  bool _isFirstCriteriaFulfilled = false;
+
+  bool _isSecondCriteriaFulfilled = false;
+
+  bool _isThirdCriteriaFulfilled = false;
+
+  bool _isFourthCriteriaFulfilled = false;
+
+  String passwordStrength = "";
+
+  Color strengthColor = Colors.amber;
+
   void _togglePasswordVisiblity() {
       setState(() {
         _isPasswordHidden = !_isPasswordHidden;
       });
+  }
+
+  void _verifyPassword(String value) {
+    int currentStrength = 0;
+
+    setState(() {
+      if (value.length >= 9) {
+        currentStrength++;
+        _isFourthCriteriaFulfilled = true;
+      } else {
+        _isFourthCriteriaFulfilled = false;
+      }
+
+      if (RegExp(r"(?=.*[A-Z])\w+").hasMatch(value)) {
+        currentStrength++;
+        _isSecondCriteriaFulfilled = true;
+      } else {
+        _isSecondCriteriaFulfilled = false;
+      }
+
+      if (RegExp(r"(?=.*[a-z])\w+").hasMatch(value)) {
+        currentStrength++;
+        _isFirstCriteriaFulfilled = true;
+      } else {
+        _isFirstCriteriaFulfilled = false;
+      }
+
+      if (RegExp(r"(?=.*[0-9])\w+").hasMatch(value)) {
+        currentStrength++;
+        _isThirdCriteriaFulfilled = true;
+      } else {
+        _isThirdCriteriaFulfilled = false;
+      }
+
+      if (currentStrength == 1) {
+        strengthColor = Colors.red;
+        passwordStrength = "Very Weak";
+      } else if (currentStrength == 2) {
+        strengthColor = Colors.orange;
+        passwordStrength = "Weak";
+      } else if (currentStrength == 3) {
+        strengthColor = Colors.amber;
+        passwordStrength = "Moderate";
+      } else if (currentStrength == 4) {
+        strengthColor = Colors.lightGreen;
+        passwordStrength = "Strong";
+      }
+    });
+
   }
 
   @override
@@ -57,6 +118,9 @@ class _OnboardingPasswordPageState extends State<OnboardingPassword> {
                   key: _passwordFormKey,
                   child: TextFormField(
                       style: TextStyle(color: Colors.black87,),
+                      onChanged: (String value) {
+                        _verifyPassword(value);
+                      },
                       decoration: InputDecoration(
                         hintText: 'Create Password',
                         contentPadding: EdgeInsets.all(12),
@@ -81,11 +145,16 @@ class _OnboardingPasswordPageState extends State<OnboardingPassword> {
               margin: EdgeInsets.only(top: 32.0, bottom: 44.0),
               child: RichText(
                   text: TextSpan(
-                      text: 'Complexity: ',
-                      style: TextStyle(color: Colors.white),
+                      text: 'Complexity:  ',
+                      style: TextStyle(color: Colors.white, fontFamily: 'Montserrat'),
                       children: [
                         TextSpan(
-
+                          text: passwordStrength,
+                          style: TextStyle(
+                            color: this.strengthColor,
+                            fontWeight: FontWeight.w500,
+                            fontFamily: 'Montserrat'
+                          )
                         )
                       ]
                   )
@@ -97,22 +166,26 @@ class _OnboardingPasswordPageState extends State<OnboardingPassword> {
                 PasswordRequirement(
                   key: Key('lowercaseRequirement'),
                   title: 'a',
-                  subtitle: 'Lowercase'
+                  subtitle: 'Lowercase',
+                    isFulfilled: _isFirstCriteriaFulfilled
                 ),
                 PasswordRequirement(
                     key: Key('uppercaseRequirement'),
                     title: 'A',
-                    subtitle: 'Uppercase'
+                    subtitle: 'Uppercase',
+                    isFulfilled: _isSecondCriteriaFulfilled
                 ),
                 PasswordRequirement(
                     key: Key('numberRequirement'),
                     title: '123',
-                    subtitle: 'Number'
+                    subtitle: 'Number',
+                    isFulfilled: _isThirdCriteriaFulfilled
                 ),
                 PasswordRequirement(
                     key: Key('mincharRequirement'),
                     title: '9+',
-                    subtitle: 'Characters'
+                    subtitle: 'Characters',
+                    isFulfilled: _isFourthCriteriaFulfilled
                 ),
               ],
             ),
@@ -138,7 +211,7 @@ class _OnboardingPasswordPageState extends State<OnboardingPassword> {
       return 'Password cannot be empty';
     } else if (password.length > 0 && password.length < 9) {
       return 'Password must be at least 9 characters';
-    } else if (RegExp(r'^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[!@#\$&*~]).{8,}$').hasMatch(password)) {
+    } else if (!RegExp(r"(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])\w+").hasMatch(password)) {
       return 'Password must be at least contain lowercase letter, uppercase letter and number';
     }
     return null;
